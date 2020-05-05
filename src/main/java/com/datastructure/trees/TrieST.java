@@ -1,8 +1,10 @@
 package com.datastructure.trees;
 
 /**
- * In trie keys are assumed to be string
+ * In Standard R-Way trie keys are assumed to be string
  * Value can be of any type
+ *
+ * To avoid complexity - I am not building this datastructure as threadsafe.
  *
  *
  * @param <T>
@@ -44,6 +46,35 @@ public class TrieST<T> {
         char c = key.charAt(index);
         x.next[c] = recursiveput(x.next[c],key, value, index+1 );
         return x;
+
+    }
+
+    public boolean contains(String key){
+        return this.get(key) != null;
+    }
+
+    public void delete(String key) {
+        if (key == null || key.length() == 0) return;
+        recursivegetanddelete(root, key, 0);
+    }
+
+    private Node recursivegetanddelete(Node x, String key, int index) {
+        if (x == null) return null;
+        if (index == key.length()) {
+            x.value = null;
+        }
+        if (index < key.length()) {
+            char c = key.charAt(index);
+            x.next[c] = recursivegetanddelete(x.next[c], key, index+1);
+        }
+        if (x.value != null) return x;
+
+        for(int i=0; i<256;i++) {
+            if (x.next[i] != null) {
+                return x;
+            }
+        }
+        return null;
 
     }
 
