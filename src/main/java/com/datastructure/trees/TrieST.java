@@ -28,14 +28,9 @@ public class TrieST<T> {
 
     private T recursiveget(Node x, String key, int index) {
         if (x == null) return null;
-        if (index < key.length()) {
-            char c = key.charAt(index);
-            if (index == key.length()-1) {
-                return (T) x.value;
-            }
-            return recursiveget(x.next[c], key, index+1);
-        }
-        return null;
+        if (index == key.length()) { return (T) x.value; }
+        char c = key.charAt(index);
+        return recursiveget(x.next[c], key, index+1);
     }
 
     public void put(String key, T value) {
@@ -45,38 +40,11 @@ public class TrieST<T> {
 
     private Node recursiveput(Node x, String key, T value, int index) {
         if (x == null) x = new Node();
+        if (index == key.length()) { x.value = value; return x;}
         char c = key.charAt(index);
-        if (index == key.length()-1) {
-            x.value = value;
-            return x;
-        }
         x.next[c] = recursiveput(x.next[c],key, value, index+1 );
         return x;
 
-    }
-
-    static class LatLong {
-        public float lat;
-        public float lon;
-
-        public LatLong(float lat, float lon){
-            this.lat = lat;
-            this.lon = lon;
-        }
-    }
-
-
-    public static void main(String[] args) {
-        TrieST<LatLong> trie = new TrieST<>();
-
-        trie.put("sa@gmail.com", new LatLong(12.12f, 23.23f) );
-
-        trie.put("mk@gmail.com", new LatLong(12.56f, 44.44f));
-
-        LatLong loc = trie.get("mkl@gmail.com");
-        if (loc != null)
-            System.out.printf("Lat=%f,Long=%f", loc.lat, loc.lon);
-        else System.out.println("null");
     }
 
 }
